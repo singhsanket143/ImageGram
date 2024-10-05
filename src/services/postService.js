@@ -1,9 +1,18 @@
-export const createPost = async (createPostObejct) => {
-    // 1. Take the image of the post and upload on aws
+import { API_KEY, API_SECRET } from "../config/serverConfig.js";
+import { createPost } from "../repositories/postRepository.js";
+import { v2 as cloudinary } from "cloudinary";
 
-    // 2. Get the url of the image from the aws response
-
-    // 3. Create a post with the caption and the image url in the db using repository
-
-    // 4. Return the post object
-}
+cloudinary.config({
+  cloud_name: "ImageGram",
+  api_key: API_KEY,
+  api_secret: API_SECRET,
+});
+export const createPostService = async (createPostObejct) => {
+  const { image, caption, user } = createPostObejct;
+  const uploadResponse = await cloudinary.uploader.upload(image, {
+    use_filename: true,
+  });
+  const imageUrl = uploadResponse.secure_url;
+  const post = await postRepository.createPost(caption, imageUrl, user);
+  return post;
+};
