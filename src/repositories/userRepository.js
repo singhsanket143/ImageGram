@@ -25,3 +25,30 @@ export const findAllUsers = async () => {
     console.log(error);
   }
 };
+
+export const findUserById = async (id) => {
+  try {
+    const user = await User.findById(id);
+    return user;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updateUserById = async (id, updateObject) => {
+  try {
+    const user = await User.findByIdAndUpdate(id, updateObject, { new: true });
+    return user;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const deleteUserById = async (id) => {
+  try {
+    const user = await User.findByIdAndDelete(id);
+    return user;
+  } catch (error) {
+    console.log(error);
+  }
+};
