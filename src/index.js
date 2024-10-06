@@ -18,6 +18,7 @@ app.get('/ping', (req, res) => {
 });
 
 app.post('/posts', s3uploader.single('image'), createPost);
+// READ All posts, Delete post, Update post, Read single post
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
