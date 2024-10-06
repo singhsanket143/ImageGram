@@ -9,16 +9,14 @@ export const authConfig = async (req, res, next) => {
         success: false,
         message: "User with this email already exists",
       });
-    } else {
-      next();
     }
+    next();
   } catch (error) {
     return res.status(500).json({
       message: "Internal server error",
       data: error,
     });
   }
-  next();
 };
 
 export const loginUser = async (req, res, next) => {

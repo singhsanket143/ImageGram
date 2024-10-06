@@ -6,6 +6,7 @@ export const createUser = async (username, email, password) => {
     return newUser;
   } catch (error) {
     console.log(error);
+    throw error;
   }
 };
 export const findUserByEmail = async (email) => {
@@ -50,5 +51,6 @@ export const deleteUserById = async (id) => {
     return user;
   } catch (error) {
     console.log(error);
+    throw error;
   }
 };

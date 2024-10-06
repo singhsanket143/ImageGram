@@ -1,3 +1,5 @@
+import { s3, s3DeleteImage } from "../config/awsConfig.js";
+import { AWS_BUCKET_NAME } from "../config/serverConfig.js";
 import {
   createUser,
   deleteUserById,
@@ -6,14 +8,15 @@ import {
   findUserById,
   updateUserById,
 } from "../repositories/userRepository.js";
+import post from "../schema/post.js";
+import { deletePostByIdService } from "./postService.js";
 export const createUserService = async (createUserObject) => {
   try {
     const { username, email, password } = createUserObject;
-
     const user = await createUser(username, email, password);
     return user;
   } catch (error) {
-    return error;
+    throw new Error("Error creating user: " + error.message);
   }
 };
 
@@ -53,11 +56,22 @@ export const updateUserByIdService = async (id, updateObject) => {
   }
 };
 
-export const deleteUserByIdService = async (id) => {
+export const deletePostsByUserIdService = async (userId) => {
   try {
-    const user = await deleteUserById(id);
-    return user;
+    const posts = await post.find({ user: userId });
+
+    if (posts.length > 0) {
+      for (const post of posts) {
+        const photoKey = post.image.split("/").pop();
+        s3DeleteImage(photoKey);
+        await deletePostsByUserIdService(post._id);
+
+        await deletePostByIdService(post._id);
+      }
+    }
+    await deleteUserById(userId);
   } catch (error) {
-    return error;
+    console.error("Error deleting posts: ", error);
+    throw new Error("Error deleting user's posts");
   }
 };

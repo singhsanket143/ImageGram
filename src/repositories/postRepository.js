@@ -1,4 +1,5 @@
 import Post from "../schema/post.js";
+import User from "../schema/user.js";
 
 export const createPost = async (caption, image, user) => {
   try {
@@ -40,6 +41,11 @@ export const updatePostById = async (id, updateObject) => {
 export const deletePostById = async (id) => {
   try {
     const post = await Post.findByIdAndDelete(id);
+    const user = await User.findById(post.user);
+    await user.posts.pop(post._id);
+    await user.save();
+    console.log(post);
+
     return post;
   } catch (error) {
     console.log(error);

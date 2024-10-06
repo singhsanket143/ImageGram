@@ -21,6 +21,7 @@ const userSchema = new mongoose.Schema(
         message: "Invalid email format",
       },
     },
+    posts: [{ type: mongoose.Schema.Types.Mixed, ref: "Post" }],
     password: {
       type: String,
       required: true,
@@ -30,6 +31,6 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const user = mongoose.model("User", userSchema); // user collection
+const User = mongoose.model("User", userSchema); // user collection
 
-export default user;
+export default User;
