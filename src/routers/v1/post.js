@@ -13,4 +13,4 @@ router.get('/', getAllPosts);
 
 export default router;
 
-// introduce a v1 router now !!
+// wrtie 2 apis to impl deletion of a post and update of a post
