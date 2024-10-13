@@ -12,3 +12,5 @@ router.post('/', s3uploader.single('image'), createPost);
 router.get('/', getAllPosts);
 
 export default router;
+
+// introduce a v1 router now !!
