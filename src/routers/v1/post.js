@@ -2,8 +2,8 @@
 // We look at the remaining url part after /posts
 import express from 'express';
 
-import { s3uploader } from '../config/multerConfig.js';
-import { createPost, getAllPosts } from '../controllers/postController.js';
+import { s3uploader } from '../../config/multerConfig.js';
+import { createPost, getAllPosts } from '../../controllers/postController.js';
 
 const router = express.Router(); // Router object to modularize the routes
 
