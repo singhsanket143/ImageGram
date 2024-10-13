@@ -46,3 +46,12 @@ export const deletePostById = async (id) => {
         console.log(error);
     }
 }
+
+export const updatePostById = async (id, updateObject) => {
+    try {
+        const post = await Post.findByIdAndUpdate(id, updateObject, { new: true });
+        return post;
+    } catch(error) {
+        console.log(error);
+    }
+}
