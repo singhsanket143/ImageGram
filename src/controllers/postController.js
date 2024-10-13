@@ -22,7 +22,9 @@ export async function createPost(req, res) {
 }
 
 export async function getAllPosts(req, res) {
-  const posts = await findAllPostsService();
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  const posts = await findAllPostsService(page, limit);
   return res.status(200).json({
     success: true,
     message: "All posts fetched successfully",
@@ -36,6 +38,21 @@ export async function getPostById(req, res) {
     success: true,
     message: "Post fetched successfully",
     data: post,
+  });
+}
+export async function updatePostById(req, res) {
+  const post = await updatePostByIdService(req.params.id, req.body);
+  if (!post) {
+    return res.status(404).json({
+      success: false,
+      message: "Post not found",
+    });
+  }
+  const updatedPost = await updatePostByIdService(req.params.id, req.body);
+  return res.status(200).json({
+    success: true,
+    message: "Post updated successfully",
+    data: updatedPost,
   });
 }
 

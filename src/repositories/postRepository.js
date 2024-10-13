@@ -12,12 +12,27 @@ export const createPost = async (caption, image, user) => {
   }
 };
 
-export const findAllPosts = async () => {
+export const findAllPosts = async (page, limit) => {
   try {
-    const posts = await Post.find();
-    return posts;
+    const next = (page - 1) * limit;
+
+    const posts = await Post.find()
+      .limit(limit)
+      .skip(next)
+      .sort({ createdAt: -1 });
+
+    const totalPosts = await Post.countDocuments();
+
+    return {
+      page,
+      limit,
+      totalPages: Math.ceil(totalPosts / limit),
+      totalPosts,
+      data: posts,
+    };
   } catch (error) {
     console.log(error);
+    throw error;
   }
 };
 
