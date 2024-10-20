@@ -48,7 +48,7 @@ export async function getAllPosts(req, res) {
 export async function deletePost(req, res) {
     try {
         const postId = req.params.id;
-        const response = await deletePostService(postId);
+        const response = await deletePostService(postId, req.user._id);
         if(!response) {
             return res.status(404).json({
                 success: false,
@@ -62,6 +62,12 @@ export async function deletePost(req, res) {
         })
     } catch(error) {
         console.log(error);
+        if(error.status) {
+            return res.status(error.status).json({
+                success: false,
+                message: error.message
+            })
+        }
         return res.status(500).json({
             success: false,
             message: "Internal Server Error"
